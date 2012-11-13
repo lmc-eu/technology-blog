@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[My Octopress Blog]]></title>
-  <link href="http://yoursite.com/atom.xml" rel="self"/>
-  <link href="http://yoursite.com/"/>
-  <updated>2012-11-13T13:51:42+01:00</updated>
-  <id>http://yoursite.com/</id>
+  <title><![CDATA[LMC Technology blog]]></title>
+  <link href="http://lmc-eu.github.com/technology//atom.xml" rel="self"/>
+  <link href="http://lmc-eu.github.com/technology//"/>
+  <updated>2012-11-13T13:58:45+01:00</updated>
+  <id>http://lmc-eu.github.com/technology//</id>
   <author>
-    <name><![CDATA[Your Name]]></name>
+    <name><![CDATA[LMC s.r.o.]]></name>
     
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
