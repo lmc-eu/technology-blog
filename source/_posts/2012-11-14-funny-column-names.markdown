@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Funny column names"
+title: "JPA, HSQLDB and Funny column names"
 date: 2012-11-14 17:32
 author: Kamil Podlesak
 comments: true
@@ -23,7 +23,7 @@ After some digging, the culprit has been found: the "dollar" sign **$** in colum
 
 Fortunately, both hibernate and JPA hsqldb can handle such names and the solution is actually really simple: just quote them.
 
-```
+{% codeblock lang:java %}
 	//ORDER is reserved word
     @Column(name = "\"ORDER\"", nullable = false)
     private Integer order;
@@ -35,5 +35,5 @@ Fortunately, both hibernate and JPA hsqldb can handle such names and the solutio
     //no quoting is needed here
     @Column(name = "PARAM", length = 255)
     private String param;
-```
+{% endcodeblock %}
 Hibernate internally converts quotes (they are actually part of JPA2.0 standard) to back-ticks (that's hibernate-specific way to escape names) and then back to quotes (in `org.hibernate.dialect.HSQLDialect`).
