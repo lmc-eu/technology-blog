@@ -1,13 +1,11 @@
 ---
 layout: post
-title: "Funny column names"
+title: "JPA, HSQLDB and funny column names"
 date: 2012-11-14 17:32
 author: Kamil Podlesak
 comments: true
 categories: database
 ---
-
-# JPA, HSQLDB and funny column names
 
 There is probably no need to introduce [hsqldb](http://hsqldb.org), let's just say that it's invaluable tool for automated (integration) tests of java/sql code. Especially when combined with Hibernate/JPA and its automatic ddl.
 
