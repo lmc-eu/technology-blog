@@ -4,7 +4,7 @@
   <title><![CDATA[LMC Technology blog]]></title>
   <link href="http://lmc-eu.github.com/technology//atom.xml" rel="self"/>
   <link href="http://lmc-eu.github.com/technology//"/>
-  <updated>2012-11-14T17:34:36+01:00</updated>
+  <updated>2012-11-15T08:32:05+01:00</updated>
   <id>http://lmc-eu.github.com/technology//</id>
   <author>
     <name><![CDATA[LMC s.r.o.]]></name>
@@ -14,13 +14,11 @@
 
   
   <entry>
-    <title type="html"><![CDATA[Funny column names]]></title>
+    <title type="html"><![CDATA[JPA, HSQLDB and funny column names]]></title>
     <link href="http://lmc-eu.github.com/technology//blog/2012/11/14/funny-column-names/"/>
     <updated>2012-11-14T17:32:00+01:00</updated>
     <id>http://lmc-eu.github.com/technology//blog/2012/11/14/funny-column-names</id>
-    <content type="html"><![CDATA[<h1>JPA, HSQLDB and funny column names</h1>
-
-<p>There is probably no need to introduce <a href="http://hsqldb.org">hsqldb</a>, let&#8217;s just say that it&#8217;s invaluable tool for automated (integration) tests of java/sql code. Especially when combined with Hibernate/JPA and its automatic ddl.</p>
+    <content type="html"><![CDATA[<p>There is probably no need to introduce <a href="http://hsqldb.org">hsqldb</a>, let&#8217;s just say that it&#8217;s invaluable tool for automated (integration) tests of java/sql code. Especially when combined with Hibernate/JPA and its automatic ddl.</p>
 
 <p>But there are, of course, pitfalls. One of them looks like this:</p>
 
