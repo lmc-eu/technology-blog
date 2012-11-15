@@ -4,7 +4,7 @@
   <title><![CDATA[Category: database | LMC Technology blog]]></title>
   <link href="http://lmc-eu.github.com/technology//blog/categories/database/atom.xml" rel="self"/>
   <link href="http://lmc-eu.github.com/technology//"/>
-  <updated>2012-11-15T08:32:51+01:00</updated>
+  <updated>2012-11-15T09:21:12+01:00</updated>
   <id>http://lmc-eu.github.com/technology//</id>
   <author>
     <name><![CDATA[LMC s.r.o.]]></name>
@@ -14,13 +14,13 @@
 
   
   <entry>
-    <title type="html"><![CDATA[JPA, HSQLDB and funny column names]]></title>
+    <title type="html"><![CDATA[JPA, HSQLDB and Funny column names]]></title>
     <link href="http://lmc-eu.github.com/technology//blog/2012/11/14/funny-column-names/"/>
     <updated>2012-11-14T17:32:00+01:00</updated>
     <id>http://lmc-eu.github.com/technology//blog/2012/11/14/funny-column-names</id>
     <content type="html"><![CDATA[<p>There is probably no need to introduce <a href="http://hsqldb.org">hsqldb</a>, let's just say that it's invaluable tool for automated (integration) tests of java/sql code. Especially when combined with Hibernate/JPA and its automatic ddl.</p>
 
-<p>But there are, of course, pitfalls. One of them looks like this:</p>
+<p>There are, however, pitfalls. One of them looks like this:</p>
 
 <p><code>
 [2012-11-08 18:08:46,257] [main] (ERROR) hibernate.tool.hbm2ddl.SchemaExport - HHH000389: Unsuccessful: create table PUBLIC.ADDRESS_CNDP (ADDRESS_ID bigint not null, $SEC_DOMAIN_G2ID bigint, DETAIL varchar(100), GIS_ID varchar(255), NUMBER varchar(16), ORIENTATION_NUMBER varchar(16), STATUS integer, STR_CITY varchar(100), STR_CITYPART varchar(100), STR_COUNTRY varchar(100), STR_DISTRICT varchar(100), STR_REGION varchar(100), STR_STREET varchar(100), STR_TERRITORY varchar(100), TYPE integer, ZIP varchar(255), CITY_ID integer, CITYPART_ID integer, COUNTRY_ID integer, DISTRICT_ID integer, REGION_ID integer, STREET_ID integer, TERRITORY_ID integer, primary key (ADDRESS_ID))
@@ -28,27 +28,44 @@
 </code>
 Yes, that's all - the error message ends by colon. Not really helpful...</p>
 
-<p>After some digging, the culprit has been found: the "dollar" sign <strong>$</strong> in column name. Of course, using such character <del>stupid</del> <em>controversial</em>, but it's too late now as the main db2 database is eight year old. The same apply to other <em>controversial</em> column name choices, like <code>ORDER</code>, <code>COUNT</code> or <code>PACKAGE</code>.</p>
+<p>After some digging, the culprit has been found: the "dollar" sign <strong>$</strong> in column name. Of course, using such character is <del>stupid</del> <em>controversial</em>, but it's too late now - the main db2 database is already eight years old and changing column name without real reason is overkill. Similar problem happens with other <em>controversial</em> column name choices, like <code>ORDER</code>, <code>COUNT</code> or <code>PACKAGE</code>.</p>
 
-<p>Fortunately, both hibernate and JPA hsqldb can handle such names and the solution is actually really simple: just quote them.</p>
+<p>Fortunately, both hibernate and JPA hsqldb can handle such names and the solution is actually quite simple: just quote them.</p>
 
-<p>```</p>
-
-<pre><code>//ORDER is reserved word
-@Column(name = "\"ORDER\"", nullable = false)
-private Integer order;
-
-//$ is special character!
-@Column(name = "\"$SEC_DOMAIN_G2ID\"", updatable = false)
-private Long $secDomain;
-
-//no quoting is needed here
-@Column(name = "PARAM", length = 255)
-private String param;
-</code></pre>
-
-<p><code>``
-Hibernate internally converts quotes (they are actually part of JPA2.0 standard) to back-ticks (that's hibernate-specific way to escape names) and then back to quotes (in</code>org.hibernate.dialect.HSQLDialect`).</p>
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="c1">//ORDER is reserved word</span>
+</span><span class='line'><span class="nd">@Column</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">&quot;\&quot;ORDER\&quot;&quot;</span><span class="o">,</span> <span class="n">nullable</span> <span class="o">=</span> <span class="kc">false</span><span class="o">)</span>
+</span><span class='line'><span class="kd">private</span> <span class="n">Integer</span> <span class="n">order</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">//$ is special character!</span>
+</span><span class='line'><span class="nd">@Column</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">&quot;\&quot;$SEC_DOMAIN_G2ID\&quot;&quot;</span><span class="o">,</span> <span class="n">updatable</span> <span class="o">=</span> <span class="kc">false</span><span class="o">)</span>
+</span><span class='line'><span class="kd">private</span> <span class="n">Long</span> <span class="n">$secDomain</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">//no quoting is needed here</span>
+</span><span class='line'><span class="nd">@Column</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">&quot;PARAM&quot;</span><span class="o">,</span> <span class="n">length</span> <span class="o">=</span> <span class="mi">255</span><span class="o">)</span>
+</span><span class='line'><span class="kd">private</span> <span class="n">String</span> <span class="n">param</span><span class="o">;</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+Hibernate internally converts quotes (they are actually part of JPA2.0 standard) to back-ticks (that's hibernate-specific way to escape names) and then back to quotes (in <code>org.hibernate.dialect.HSQLDialect</code>).</p>
 ]]></content>
   </entry>
   

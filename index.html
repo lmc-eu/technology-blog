@@ -95,7 +95,7 @@
 
   <div class="entry-content"><p>There is probably no need to introduce <a href="http://hsqldb.org">hsqldb</a>, let&#8217;s just say that it&#8217;s invaluable tool for automated (integration) tests of java/sql code. Especially when combined with Hibernate/JPA and its automatic ddl.</p>
 
-<p>But there are, of course, pitfalls. One of them looks like this:</p>
+<p>There are, however, pitfalls. One of them looks like this:</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -105,11 +105,11 @@
 
 <p>Yes, that&#8217;s all - the error message ends by colon. Not really helpful&#8230;</p>
 
-<p>After some digging, the culprit has been found: the &#8220;dollar&#8221; sign <strong>$</strong> in column name. Of course, using such character <del>stupid</del> <em>controversial</em>, but it&#8217;s too late now as the main db2 database is eight year old. The same apply to other <em>controversial</em> column name choices, like <code>ORDER</code>, <code>COUNT</code> or <code>PACKAGE</code>.</p>
+<p>After some digging, the culprit has been found: the &#8220;dollar&#8221; sign <strong>$</strong> in column name. Of course, using such character is <del>stupid</del> <em>controversial</em>, but it&#8217;s too late now - the main db2 database is already eight years old and changing column name without real reason is overkill. Similar problem happens with other <em>controversial</em> column name choices, like <code>ORDER</code>, <code>COUNT</code> or <code>PACKAGE</code>.</p>
 
-<p>Fortunately, both hibernate and JPA hsqldb can handle such names and the solution is actually really simple: just quote them.</p>
+<p>Fortunately, both hibernate and JPA hsqldb can handle such names and the solution is actually quite simple: just quote them.</p>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -120,17 +120,18 @@
 <span class='line-number'>9</span>
 <span class='line-number'>10</span>
 <span class='line-number'>11</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>//ORDER is reserved word
-</span><span class='line'>@Column(name = "\"ORDER\"", nullable = false)
-</span><span class='line'>private Integer order;
+</pre></td><td class='code'><pre><code class='java'><span class='line'> <span class="c1">//ORDER is reserved word</span>
+</span><span class='line'>    <span class="nd">@Column</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">&quot;\&quot;ORDER\&quot;&quot;</span><span class="o">,</span> <span class="n">nullable</span> <span class="o">=</span> <span class="kc">false</span><span class="o">)</span>
+</span><span class='line'>    <span class="kd">private</span> <span class="n">Integer</span> <span class="n">order</span><span class="o">;</span>
 </span><span class='line'>
-</span><span class='line'>//$ is special character!
-</span><span class='line'>@Column(name = "\"$SEC_DOMAIN_G2ID\"", updatable = false)
-</span><span class='line'>private Long $secDomain;
+</span><span class='line'>    <span class="c1">//$ is special character!</span>
+</span><span class='line'>    <span class="nd">@Column</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">&quot;\&quot;$SEC_DOMAIN_G2ID\&quot;&quot;</span><span class="o">,</span> <span class="n">updatable</span> <span class="o">=</span> <span class="kc">false</span><span class="o">)</span>
+</span><span class='line'>    <span class="kd">private</span> <span class="n">Long</span> <span class="n">$secDomain</span><span class="o">;</span>
 </span><span class='line'>
-</span><span class='line'>//no quoting is needed here
-</span><span class='line'>@Column(name = "PARAM", length = 255)
-</span><span class='line'>private String param;</span></code></pre></td></tr></table></div></figure>
+</span><span class='line'>    <span class="c1">//no quoting is needed here</span>
+</span><span class='line'>    <span class="nd">@Column</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">&quot;PARAM&quot;</span><span class="o">,</span> <span class="n">length</span> <span class="o">=</span> <span class="mi">255</span><span class="o">)</span>
+</span><span class='line'>    <span class="kd">private</span> <span class="n">String</span> <span class="n">param</span><span class="o">;</span>
+</span></code></pre></td></tr></table></div></figure>
 
 
 <p>Hibernate internally converts quotes (they are actually part of JPA2.0 standard) to back-ticks (that&#8217;s hibernate-specific way to escape names) and then back to quotes (in <code>org.hibernate.dialect.HSQLDialect</code>).</p>
@@ -154,7 +155,7 @@
   <ul id="recent_posts">
     
       <li class="post">
-        <a href="/technology/blog/2012/11/14/funny-column-names/">JPA, HSQLDB and funny column names</a>
+        <a href="/technology/blog/2012/11/14/funny-column-names/">JPA, HSQLDB and Funny column names</a>
       </li>
     
   </ul>
