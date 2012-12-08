@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: java | LMC Technology blog]]></title>
+  <link href="http://lmc-eu.github.com/technology//blog/categories/java/atom.xml" rel="self"/>
+  <link href="http://lmc-eu.github.com/technology//"/>
+  <updated>2012-12-08T13:00:48+01:00</updated>
+  <id>http://lmc-eu.github.com/technology//</id>
+  <author>
+    <name><![CDATA[LMC s.r.o.]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[JPA batch update]]></title>
+    <link href="http://lmc-eu.github.com/technology//blog/2012/12/08/jpa-batch-update/"/>
+    <updated>2012-12-08T12:34:00+01:00</updated>
+    <id>http://lmc-eu.github.com/technology//blog/2012/12/08/jpa-batch-update</id>
+    <content type="html"><![CDATA[<p>I've just spent few hours hunting some very weird bug in our new JPA code and found out that hibernate 4 (I don't know about other JPA implementations) does not clear cache on HQL batch updates.</p>
+
+<p>This code fill some initial values to previously <code>null</code> columns:
+<div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="kd">public</span> <span class="kt">int</span> <span class="n">fillOilife</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>    <span class="n">Query</span> <span class="n">query</span> <span class="o">=</span> <span class="n">em</span><span class="o">.</span><span class="na">createQuery</span><span class="o">(</span><span class="s">&quot;UPDATE PdjdOrderItem poi SET poi.oilife = :oilife &quot;</span> <span class="o">+</span>
+</span><span class='line'>            <span class="s">&quot;WHERE poi.pdjdGeneration&amp;gt;0 AND poi.oistate = :oistate AND poi.oilife is NULL&quot;</span><span class="o">);</span>
+</span><span class='line'>    <span class="n">query</span><span class="o">.</span><span class="na">setParameter</span><span class="o">(</span><span class="s">&quot;oilife&quot;</span><span class="o">,</span> <span class="n">INITIAL_OILIFE</span><span class="o">);</span>
+</span><span class='line'>    <span class="n">query</span><span class="o">.</span><span class="na">setParameter</span><span class="o">(</span><span class="s">&quot;oistate&quot;</span><span class="o">,</span> <span class="n">VALID_OISTATE</span><span class="o">);</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">query</span><span class="o">.</span><span class="na">executeUpdate</span><span class="o">();</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+The update is correctly processed into SQL query and executed, but the session cache remains as it is. I've expected hibernate to detect that PdjdOrderItem is being changed and to clear all cached entities (or just the changed ones, but that would be unreasonably complicated). Hibernate, however, does nothing and happily server stale PdjdOrderItem entities with <code>null</code> values.</p>
+
+<p>Solution is quite simple, if a little annoying: clear the cache by explicit <code>clear()</code> call:
+<div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="kd">public</span> <span class="kt">int</span> <span class="n">fillOilife</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>    <span class="n">em</span><span class="o">.</span><span class="na">flush</span><span class="o">();</span>
+</span><span class='line'>    <span class="n">em</span><span class="o">.</span><span class="na">clear</span><span class="o">();</span>
+</span><span class='line'>    <span class="n">Query</span> <span class="n">query</span> <span class="o">=</span> <span class="n">em</span><span class="o">.</span><span class="na">createQuery</span><span class="o">(</span><span class="s">&quot;UPDATE PdjdOrderItem poi SET poi.oilife = :oilife &quot;</span> <span class="o">+</span>
+</span><span class='line'>            <span class="s">&quot;WHERE poi.pdjdGeneration&amp;gt;0 AND poi.oistate = :oistate AND poi.oilife is NULL&quot;</span><span class="o">);</span>
+</span><span class='line'>    <span class="n">query</span><span class="o">.</span><span class="na">setParameter</span><span class="o">(</span><span class="s">&quot;oilife&quot;</span><span class="o">,</span> <span class="n">INITIAL_OILIFE</span><span class="o">);</span>
+</span><span class='line'>    <span class="n">query</span><span class="o">.</span><span class="na">setParameter</span><span class="o">(</span><span class="s">&quot;oistate&quot;</span><span class="o">,</span> <span class="n">VALID_OISTATE</span><span class="o">);</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">query</span><span class="o">.</span><span class="na">executeUpdate</span><span class="o">();</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+But I still feel disappointed.</p>
+]]></content>
+  </entry>
+  
+</feed>

@@ -5,7 +5,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>LMC Technology blog</title>
+  <title>JPA batch update - LMC Technology blog</title>
   <meta name="author" content="LMC s.r.o.">
 
   
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://lmc-eu.github.com/technology//">
+  <link rel="canonical" href="http://lmc-eu.github.com/technology//blog/2012/12/08/jpa-batch-update/">
   <link href="/technology/favicon.png" rel="icon">
   <link href="/technology/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/technology/javascripts/modernizr-2.0.js"></script>
@@ -74,15 +74,12 @@
 </nav>
   <div id="main">
     <div id="content">
-      <div class="blog-index">
+      <div>
+<article class="hentry" role="article">
   
-  
-  
-    <article>
-      
   <header>
     
-      <h1 class="entry-title"><a href="/technology/blog/2012/12/08/jpa-batch-update/">JPA Batch Update</a></h1>
+      <h1 class="entry-title">JPA Batch Update</h1>
     
     
       <p class="meta">
@@ -105,7 +102,7 @@
   </header>
 
 
-  <div class="entry-content"><p>I&#8217;ve just spent few hours hunting some very weird bug in our new JPA code and found out that hibernate 4 (I don&#8217;t know about other JPA implementations) does not clear cache on HQL batch updates.</p>
+<div class="entry-content"><p>I&#8217;ve just spent few hours hunting some very weird bug in our new JPA code and found out that hibernate 4 (I don&#8217;t know about other JPA implementations) does not clear cache on HQL batch updates.</p>
 
 <p>This code fill some initial values to previously <code>null</code> columns:</p>
 
@@ -153,22 +150,16 @@
 
 <p>But I still feel disappointed.</p>
 </div>
-  
-  
 
 
-    </article>
-  
-  
-    <article>
+  <footer>
+    <p class="meta">
       
-  <header>
-    
-      <h1 class="entry-title"><a href="/technology/blog/2012/11/14/funny-column-names/">JPA, HSQLDB and Funny Column Names</a></h1>
-    
-    
-      <p class="meta">
-        
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Kamil Podlesak</span></span>
+
+      
 
 
 
@@ -180,68 +171,38 @@
   
 
 
-<time datetime="2012-11-14T17:32:00+01:00" pubdate data-updated="true">Nov 14<span>th</span>, 2012</time>
-        
-      </p>
+<time datetime="2012-12-08T12:34:00+01:00" pubdate data-updated="true">Dec 8<span>th</span>, 2012</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/technology/blog/categories/java/'>java</a>
+  
+</span>
+
+
+    </p>
     
-  </header>
-
-
-  <div class="entry-content"><p>There is probably no need to introduce <a href="http://hsqldb.org">hsqldb</a>, let&#8217;s just say that it&#8217;s invaluable tool for automated (integration) tests of java/sql code. Especially when combined with Hibernate/JPA and its automatic ddl.</p>
-
-<p>There are, however, pitfalls. One of them looks like this:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>[2012-11-08 18:08:46,257] [main] (ERROR) hibernate.tool.hbm2ddl.SchemaExport - HHH000389: Unsuccessful: create table PUBLIC.ADDRESS_CNDP (ADDRESS_ID bigint not null, $SEC_DOMAIN_G2ID bigint, DETAIL varchar(100), GIS_ID varchar(255), NUMBER varchar(16), ORIENTATION_NUMBER varchar(16), STATUS integer, STR_CITY varchar(100), STR_CITYPART varchar(100), STR_COUNTRY varchar(100), STR_DISTRICT varchar(100), STR_REGION varchar(100), STR_STREET varchar(100), STR_TERRITORY varchar(100), TYPE integer, ZIP varchar(255), CITY_ID integer, CITYPART_ID integer, COUNTRY_ID integer, DISTRICT_ID integer, REGION_ID integer, STREET_ID integer, TERRITORY_ID integer, primary key (ADDRESS_ID))
-</span><span class='line'>[2012-11-08 18:08:46,257] [main] (ERROR) hibernate.tool.hbm2ddl.SchemaExport - unknown token: </span></code></pre></td></tr></table></div></figure>
-
-
-<p>Yes, that&#8217;s all - the error message ends by colon. Not really helpful&#8230;</p>
-
-<p>After some digging, the culprit has been found: the &#8220;dollar&#8221; sign <strong>$</strong> in column name. Of course, using such character is <del>stupid</del> <em>controversial</em>, but it&#8217;s too late now - the main db2 database is already eight years old and changing column name without real reason is overkill. Similar problem happens with other <em>controversial</em> column name choices, like <code>ORDER</code>, <code>COUNT</code> or <code>PACKAGE</code>.</p>
-
-<p>Fortunately, both hibernate and JPA hsqldb can handle such names and the solution is actually quite simple: just quote them.</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'> <span class="c1">//ORDER is reserved word</span>
-</span><span class='line'>    <span class="nd">@Column</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">&quot;\&quot;ORDER\&quot;&quot;</span><span class="o">,</span> <span class="n">nullable</span> <span class="o">=</span> <span class="kc">false</span><span class="o">)</span>
-</span><span class='line'>    <span class="kd">private</span> <span class="n">Integer</span> <span class="n">order</span><span class="o">;</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="c1">//$ is special character!</span>
-</span><span class='line'>    <span class="nd">@Column</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">&quot;\&quot;$SEC_DOMAIN_G2ID\&quot;&quot;</span><span class="o">,</span> <span class="n">updatable</span> <span class="o">=</span> <span class="kc">false</span><span class="o">)</span>
-</span><span class='line'>    <span class="kd">private</span> <span class="n">Long</span> <span class="n">$secDomain</span><span class="o">;</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="c1">//no quoting is needed here</span>
-</span><span class='line'>    <span class="nd">@Column</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">&quot;PARAM&quot;</span><span class="o">,</span> <span class="n">length</span> <span class="o">=</span> <span class="mi">255</span><span class="o">)</span>
-</span><span class='line'>    <span class="kd">private</span> <span class="n">String</span> <span class="n">param</span><span class="o">;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Hibernate internally converts quotes (they are actually part of JPA2.0 standard) to back-ticks (that&#8217;s hibernate-specific way to escape names) and then back to quotes (in <code>org.hibernate.dialect.HSQLDialect</code>).</p>
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://lmc-eu.github.com/technology//blog/2012/12/08/jpa-batch-update/" data-via="" data-counturl="http://lmc-eu.github.com/technology//blog/2012/12/08/jpa-batch-update/" >Tweet</a>
+  
+  
+  
 </div>
-  
-  
 
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/technology/blog/2012/11/14/funny-column-names/" title="Previous Post: JPA, HSQLDB and Funny column names">&laquo; JPA, HSQLDB and Funny column names</a>
+      
+      
+    </p>
+  </footer>
+</article>
 
-    </article>
-  
-  <div class="pagination">
-    
-    <a href="/technology/blog/archives">Blog Archives</a>
-    
-  </div>
 </div>
+
 <aside class="sidebar">
   
     <section>
@@ -266,6 +227,7 @@
 
   
 </aside>
+
 
     </div>
   </div>
