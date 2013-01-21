@@ -1,0 +1,274 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>JAXB bug in java 6 - LMC Technology blog</title>
+  <meta name="author" content="LMC s.r.o.">
+
+  
+  <meta name="description" content="Short version JAXB implementation embedded in Java 6 is broken, don&#8217;t use it.
+Java 7 is ok, if you&#8217;re lucky enough to use latest java &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://lmc-eu.github.com/technology//blog/2013/01/20/jaxb-bug-in-java-6/">
+  <link href="/technology/favicon.png" rel="icon">
+  <link href="/technology/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/technology/javascripts/modernizr-2.0.js"></script>
+  <script src="/technology/javascripts/ender.js"></script>
+  <script src="/technology/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="LMC Technology blog" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-36380287-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/technology/">LMC Technology blog</a></h1>
+  
+    <h2>Assorted thoughts of LMC engineers</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:lmc-eu.github.com/technology/" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/technology/">Blog</a></li>
+  <li><a href="/technology/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">JAXB Bug in Java 6</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-01-20T11:41:00+01:00" pubdate data-updated="true">Jan 20<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><h1>Short version</h1>
+
+<p><strong>JAXB implementation embedded in Java 6 is broken, don&#8217;t use it.</strong>
+Java 7 is ok, if you&#8217;re lucky enough to use latest java version.</p>
+
+<p>To check if your implementation is correct, you can use tool at <a href="https://github.com/podlesh/jaxb-bug">github</a></p>
+
+<h1>Long story version</h1>
+
+<p>I discovered this bug when I wrote some utility classes for marshalling and unmarshalling JAXB objects (lots of boilerplate code, but that&#8217;s different story).
+As a conscientious and responsible developer, I wrote unit test. This unit test contains also test case that repeatedly deserializes and serializes xml field, checking
+that the result is the same. Unit tests were green, so commit and push followed. And in a few minutes, Jenkins reported broken test.</p>
+
+<p>WTF? There must be some difference in environment&#8230; and it certainly is: Jenkins job uses jdk 1.6 while I use jdk 1.7 by default (on my macbook, this is the native apple one).
+Indeed, after downloading jdk 1.6 from Sun/Oracle and running tests with this version, the deserialization/serialization test case failed.</p>
+
+<p>The failure is quite peculiar one: some elements that are not <em>nil</em> in XML source are marked <code>xsi:nil="true"</code> in the result. But not all of them. The result is correct
+until the first <code>xsi:nil="true"</code> in the source. All following <em>nil</em>-able elements (ie wrapped by <code>JAXBElement</code>) are marked as <em>nil</em>. Apparently, the JAXB unmarshalling code fails to reset
+some internal state flag (and debugging the code confirms this observation).</p>
+
+<p>To check different implementations, I&#8217;ve made <a href="https://github.com/podlesh/jaxb-bug">testing tool</a>. Just to be sure, it checks all four variations of nil and non-nil elements. In reality, it is always the last list that displays either OK or ERROR.</p>
+
+<p>Result on jdk 1.6:</p>
+
+<pre><code>resource `incorrect1.xml` unmarshalled to class eu.lmc.bug.jaxb.ElementBug
+  A is nil    , expected nil     (OK)
+  B is nil    , expected element ERROR!
+</code></pre>
+
+<p>Result on jdk 1.7:</p>
+
+<pre><code>resource `incorrect1.xml` unmarshalled to class eu.lmc.bug.jaxb.ElementBug
+  A is nil    , expected nil     (OK)
+  B is element, expected element (OK)
+</code></pre>
+
+<h1>Solution</h1>
+
+<p>There is no real workaround, but there are two ways how to use correct implementation:</p>
+
+<ul>
+<li>upgrade to jdk 1.7</li>
+<li>use correct <code>jaxb-impl-X.jar</code> (it overrides the embedded version)</li>
+</ul>
+
+
+<p>When using JAXB-RI, don&#8217;t forget to check it for this bug. According to <a href="http://jaxb.java.net/guide/Which_JAXB_RI_is_included_in_which_JDK_.html">jaxb.java.net</a>, it looks like this bug is limited to versions 2.1.x</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Kamil Podlesak</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-01-20T11:41:00+01:00" pubdate data-updated="true">Jan 20<span>th</span>, 2013</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/technology/blog/categories/java/'>java</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://lmc-eu.github.com/technology//blog/2013/01/20/jaxb-bug-in-java-6/" data-via="" data-counturl="http://lmc-eu.github.com/technology//blog/2013/01/20/jaxb-bug-in-java-6/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/technology/blog/2012/12/08/jpa-batch-update/" title="Previous Post: JPA batch update">&laquo; JPA batch update</a>
+      
+      
+        <a class="basic-alignment right" href="/technology/blog/2013/01/21/groovy-testng-tests/" title="Next Post: groovy testng tests">groovy testng tests &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/technology/blog/2013/01/21/groovy-testng-tests/">groovy testng tests</a>
+      </li>
+    
+      <li class="post">
+        <a href="/technology/blog/2013/01/20/jaxb-bug-in-java-6/">JAXB bug in java 6</a>
+      </li>
+    
+      <li class="post">
+        <a href="/technology/blog/2012/12/08/jpa-batch-update/">JPA batch update</a>
+      </li>
+    
+      <li class="post">
+        <a href="/technology/blog/2012/11/14/funny-column-names/">JPA, HSQLDB and Funny column names</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - LMC s.r.o. -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

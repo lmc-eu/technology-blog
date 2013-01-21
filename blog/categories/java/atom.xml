@@ -4,7 +4,7 @@
   <title><![CDATA[Category: java | LMC Technology blog]]></title>
   <link href="http://lmc-eu.github.com/technology//blog/categories/java/atom.xml" rel="self"/>
   <link href="http://lmc-eu.github.com/technology//"/>
-  <updated>2012-12-08T13:00:48+01:00</updated>
+  <updated>2013-01-21T09:08:19+01:00</updated>
   <id>http://lmc-eu.github.com/technology//</id>
   <author>
     <name><![CDATA[LMC s.r.o.]]></name>
@@ -12,6 +12,186 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[groovy testng tests]]></title>
+    <link href="http://lmc-eu.github.com/technology//blog/2013/01/21/groovy-testng-tests/"/>
+    <updated>2013-01-21T13:52:00+01:00</updated>
+    <id>http://lmc-eu.github.com/technology//blog/2013/01/21/groovy-testng-tests</id>
+    <content type="html"><![CDATA[<p>This post is not about using groovy to write unit tests (just warning for those who haven't tried it yet and still use java: it's addictive), but rather about one particular problem:
+how to run them? Maven surefire plugin should, in theory, run them - there is even explicit support. Unfortunately, this plugin is (like many maven plugins) riddled with bugs and I haven't seen
+single version without at least one bug in testng support. Usually, it fails to find groovy tests.</p>
+
+<p>One obvious workaround is to compile groovy to <code>.class</code> files. When compiled, groovy classes are found by surefire just like java ones. This solution, however, is quite complicated and just feels wrong.</p>
+
+<p>Another solution is quite obscure, but perfect: testng <code>@Factory</code> annotation.
+This method is called on any testng instance that had been already found and the result (array) is then added to list of testng instances to execute. In short, this allows us to "spawn" other tests.</p>
+
+<p>Less talking, more code:
+<div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kn">import</span> <span class="nn">groovy.lang.GroovyClassLoader</span><span class="o">;</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">groovy.lang.Script</span><span class="o">;</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">org.codehaus.groovy.control.CompilationFailedException</span><span class="o">;</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">org.codehaus.groovy.runtime.DefaultGroovyMethods</span><span class="o">;</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">org.springframework.core.io.Resource</span><span class="o">;</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">org.springframework.core.io.support.PathMatchingResourcePatternResolver</span><span class="o">;</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">org.testng.annotations.Factory</span><span class="o">;&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="kn">import</span> <span class="nn">java.util.ArrayList</span><span class="o">;</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">java.util.List</span><span class="o">;&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;/&lt;</span><span class="n">em</span><span class="o">&gt;*</span>
+</span><span class='line'> <span class="o">*</span> <span class="n">This</span> <span class="n">is</span> <span class="n">not</span> <span class="n">really</span> <span class="n">test</span><span class="o">,</span> <span class="k">this</span> <span class="n">is</span> <span class="n">just</span> <span class="n">runner</span> <span class="n">fro</span> <span class="n">groovy</span> <span class="n">tests</span><span class="o">.</span>
+</span><span class='line'> <span class="o">*</span> <span class="n">Maven</span> <span class="n">Surefire</span> <span class="n">plugin</span> <span class="n">can</span><span class="o">,</span> <span class="n">in</span> <span class="n">theory</span><span class="o">,</span> <span class="n">run</span> <span class="n">these</span> <span class="n">tests</span> <span class="n">by</span> <span class="n">itself</span><span class="o">;</span> <span class="n">unfortunately</span> <span class="n">it</span> <span class="n">fails</span> <span class="n">on</span> <span class="n">classes</span>
+</span><span class='line'> <span class="o">*</span> <span class="n">without</span> <span class="k">default</span> <span class="n">constructor</span> <span class="n">and</span> <span class="n">on</span> <span class="n">scripts</span><span class="o">.</span>
+</span><span class='line'> <span class="o">&lt;/</span><span class="n">em</span><span class="o">&gt;/</span>
+</span><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">GroovyRunnerTest</span> <span class="o">{&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="kd">protected</span> <span class="kd">final</span> <span class="n">GroovyClassLoader</span> <span class="n">loader</span> <span class="o">=</span> <span class="k">new</span> <span class="n">GroovyClassLoader</span><span class="o">(</span><span class="n">getClass</span><span class="o">().</span><span class="na">getClassLoader</span><span class="o">());</span>
+</span><span class='line'>
+</span><span class='line'><span class="nd">@Factory</span><span class="o">()</span>
+</span><span class='line'><span class="kd">public</span> <span class="n">Object</span><span class="o">[]</span> <span class="nf">createTests</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
+</span><span class='line'>    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;createTests: &quot;</span> <span class="o">+</span> <span class="n">loader</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">PathMatchingResourcePatternResolver</span> <span class="n">resolver</span> <span class="o">=</span> <span class="k">new</span> <span class="n">PathMatchingResourcePatternResolver</span><span class="o">(</span><span class="n">loader</span><span class="o">);</span>
+</span><span class='line'>    <span class="kd">final</span> <span class="n">Resource</span><span class="o">[]</span> <span class="n">resources</span> <span class="o">=</span> <span class="n">resolver</span><span class="o">.</span><span class="na">getResources</span><span class="o">(</span><span class="s">&quot;classpath:**/*Test.groovy&quot;</span><span class="o">);</span>
+</span><span class='line'>    <span class="n">List</span><span class="o">&amp;</span><span class="n">lt</span><span class="o">;</span><span class="n">Object</span><span class="o">&amp;</span><span class="n">gt</span><span class="o">;</span> <span class="n">tests</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&amp;</span><span class="n">lt</span><span class="o">;</span><span class="n">Object</span><span class="o">&amp;</span><span class="n">gt</span><span class="o">;(</span><span class="n">resources</span><span class="o">.</span><span class="na">length</span><span class="o">);</span>
+</span><span class='line'>    <span class="k">for</span> <span class="o">(</span><span class="n">Resource</span> <span class="n">resource</span> <span class="o">:</span> <span class="n">resources</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="kd">final</span> <span class="n">String</span> <span class="n">text</span> <span class="o">=</span> <span class="n">DefaultGroovyMethods</span><span class="o">.</span><span class="na">getText</span><span class="o">(</span><span class="n">resource</span><span class="o">.</span><span class="na">getInputStream</span><span class="o">(),</span> <span class="s">&quot;UTF-8&quot;</span><span class="o">);</span>
+</span><span class='line'>        <span class="k">try</span> <span class="o">{</span>
+</span><span class='line'>            <span class="kd">final</span> <span class="n">Class</span><span class="o">&amp;</span><span class="n">lt</span><span class="o">;?&amp;</span><span class="n">gt</span><span class="o">;</span> <span class="n">clazz</span> <span class="o">=</span> <span class="n">loader</span><span class="o">.</span><span class="na">parseClass</span><span class="o">(</span><span class="n">text</span><span class="o">,</span> <span class="n">resource</span><span class="o">.</span><span class="na">getFilename</span><span class="o">());</span>
+</span><span class='line'>            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;groovy class: &quot;</span> <span class="o">+</span> <span class="n">clazz</span><span class="o">);</span>
+</span><span class='line'>            <span class="k">if</span> <span class="o">(</span><span class="n">Script</span><span class="o">.</span><span class="na">class</span><span class="o">.</span><span class="na">isAssignableFrom</span><span class="o">(</span><span class="n">clazz</span><span class="o">))</span> <span class="o">{</span>
+</span><span class='line'>                <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;skipping groovy script: &quot;</span> <span class="o">+</span> <span class="n">resource</span><span class="o">);</span>
+</span><span class='line'>                <span class="k">continue</span><span class="o">;</span>
+</span><span class='line'>            <span class="o">}</span>
+</span><span class='line'>            <span class="kd">final</span> <span class="n">Object</span> <span class="n">instance</span> <span class="o">=</span> <span class="n">clazz</span><span class="o">.</span><span class="na">newInstance</span><span class="o">();</span>
+</span><span class='line'>            <span class="n">tests</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">instance</span><span class="o">);</span>
+</span><span class='line'>        <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">CompilationFailedException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;failed to load class: &quot;</span> <span class="o">+</span> <span class="n">resource</span><span class="o">);</span>
+</span><span class='line'>        <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">InstantiationException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;failed to instantiate class: &quot;</span> <span class="o">+</span> <span class="n">resource</span><span class="o">);</span>
+</span><span class='line'>            <span class="n">System</span><span class="o">.</span><span class="na">err</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;failed to instantiate class: &quot;</span> <span class="o">+</span> <span class="n">e</span><span class="o">);</span>
+</span><span class='line'>            <span class="c1">//ignore</span>
+</span><span class='line'>        <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">return</span> <span class="n">tests</span><span class="o">.</span><span class="na">toArray</span><span class="o">(</span><span class="k">new</span> <span class="n">Object</span><span class="o">[</span><span class="n">tests</span><span class="o">.</span><span class="na">size</span><span class="o">()]);</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[JAXB bug in java 6]]></title>
+    <link href="http://lmc-eu.github.com/technology//blog/2013/01/20/jaxb-bug-in-java-6/"/>
+    <updated>2013-01-20T11:41:00+01:00</updated>
+    <id>http://lmc-eu.github.com/technology//blog/2013/01/20/jaxb-bug-in-java-6</id>
+    <content type="html"><![CDATA[<h1>Short version</h1>
+
+<p><strong>JAXB implementation embedded in Java 6 is broken, don't use it.</strong>
+Java 7 is ok, if you're lucky enough to use latest java version.</p>
+
+<p>To check if your implementation is correct, you can use tool at <a href="https://github.com/podlesh/jaxb-bug">github</a></p>
+
+<h1>Long story version</h1>
+
+<p>I discovered this bug when I wrote some utility classes for marshalling and unmarshalling JAXB objects (lots of boilerplate code, but that's different story).
+As a conscientious and responsible developer, I wrote unit test. This unit test contains also test case that repeatedly deserializes and serializes xml field, checking
+that the result is the same. Unit tests were green, so commit and push followed. And in a few minutes, Jenkins reported broken test.</p>
+
+<p>WTF? There must be some difference in environment... and it certainly is: Jenkins job uses jdk 1.6 while I use jdk 1.7 by default (on my macbook, this is the native apple one).
+Indeed, after downloading jdk 1.6 from Sun/Oracle and running tests with this version, the deserialization/serialization test case failed.</p>
+
+<p>The failure is quite peculiar one: some elements that are not <em>nil</em> in XML source are marked <code>xsi:nil="true"</code> in the result. But not all of them. The result is correct
+until the first <code>xsi:nil="true"</code> in the source. All following <em>nil</em>-able elements (ie wrapped by <code>JAXBElement</code>) are marked as <em>nil</em>. Apparently, the JAXB unmarshalling code fails to reset
+some internal state flag (and debugging the code confirms this observation).</p>
+
+<p>To check different implementations, I've made <a href="https://github.com/podlesh/jaxb-bug">testing tool</a>. Just to be sure, it checks all four variations of nil and non-nil elements. In reality, it is always the last list that displays either OK or ERROR.</p>
+
+<p>Result on jdk 1.6:</p>
+
+<pre><code>resource `incorrect1.xml` unmarshalled to class eu.lmc.bug.jaxb.ElementBug
+  A is nil    , expected nil     (OK)
+  B is nil    , expected element ERROR!
+</code></pre>
+
+<p>Result on jdk 1.7:</p>
+
+<pre><code>resource `incorrect1.xml` unmarshalled to class eu.lmc.bug.jaxb.ElementBug
+  A is nil    , expected nil     (OK)
+  B is element, expected element (OK)
+</code></pre>
+
+<h1>Solution</h1>
+
+<p>There is no real workaround, but there are two ways how to use correct implementation:</p>
+
+<ul>
+<li>upgrade to jdk 1.7</li>
+<li>use correct <code>jaxb-impl-X.jar</code> (it overrides the embedded version)</li>
+</ul>
+
+
+<p>When using JAXB-RI, don't forget to check it for this bug. According to <a href="http://jaxb.java.net/guide/Which_JAXB_RI_is_included_in_which_JDK_.html">jaxb.java.net</a>, it looks like this bug is limited to versions 2.1.x</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[JPA batch update]]></title>
