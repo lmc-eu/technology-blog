@@ -9,7 +9,7 @@
   <meta name="author" content="LMC s.r.o.">
 
   
-  <meta name="description" content="This post is not about using groovy to write unit tests (just warning for those who haven&#8217;t tried it yet and still use java: it&#8217;s &hellip;">
+  <meta name="description" content="I&#8217;ve prepared this presentation for purposes of our company and it describes benefits of utilizing Swiffy conversion tool for our/client banner &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -76,6 +76,53 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/technology/blog/2013/02/19/swiffy-for-swf-banners-help/">Swiffy for SWF Banners Help</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-02-19T10:00:00+01:00" pubdate data-updated="true">Feb 19<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>I&#8217;ve prepared this presentation for purposes of our company and it describes benefits of utilizing <a href="https://www.google.com/doubleclick/studio/swiffy/">Swiffy</a> conversion tool for our/client banner ads business.
+Our creative guys are great when using <em>Adobe Flash Professional</em> authoring tool and our customers love it, but <strong>growing iOS devices market share</strong> is already forcing us to change our current technology approach. This presentation should help us with the transformation process.</p>
+
+<p>New <a href="https://github.com/paulrouget/dzslides">DZSlides</a> version, which I&#8217;ve used as the presentation engine, is a little bit less MSIE 9 friendly then its previous releases and I had to hack it a bit. So now the presentation works well in MSIE 10, Firefox, Chrome, Safari, Opera and acceptably also on MSIE 9 as well, but sorry, MSIE 8- &#8230;
+In the presentation slides is purposefully <strong>embedded SWF file</strong> and to have it <em>visible in Gecko browsers</em>, there is a trick, which must be used - add <strong>wmode=&#8221;opaque&#8221;</strong> to the Flash object tag declaration; maybe will this hint save you some time, well, it cost me a lot to discover this, to be honest&#8230;</p>
+
+<ul>
+<li><a href="../assets/swiffy.html">Presentation Itself</a> which contains a lot of information for you to know how <em>(and if)</em> start to think differently, about how to serve/use your <em>Adobe-Fixed-Creatives</em> banner content</li>
+<li><a href="../assets/banner.htm">Simple Banner Fallback Example</a> shows easiest possible markup for you to test proposed fallback scenario <em>(yes. MSIE 8 users, this is the only sensible link for you there&#8230;)</em></li>
+<li><a href="http://svg.kvalitne.cz/swiffy/gallery.html">Sample Conversion Gallery</a> is collection of <em>(mostly)</em> LMC banners with positive results of Swiffy conversion process, with some comments, file size comparisons etc. <em>(those demos do not have proposed fallback applied to them so SVG aware browser is a must!)</em> Gallery is temporarily hosted on different server, because of some special mime type handling.</li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -483,6 +530,10 @@ some internal state flag (and debugging the code confirms this observation).</p>
     <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/technology/blog/2013/02/19/swiffy-for-swf-banners-help/">Swiffy For SWF Banners Help</a>
+      </li>
     
       <li class="post">
         <a href="/technology/blog/2013/01/21/groovy-testng-tests/">groovy testng tests</a>
