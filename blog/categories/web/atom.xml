@@ -4,7 +4,7 @@
   <title><![CDATA[Category: web | LMC Technology blog]]></title>
   <link href="http://lmc-eu.github.com/technology//blog/categories/web/atom.xml" rel="self"/>
   <link href="http://lmc-eu.github.com/technology//"/>
-  <updated>2013-02-19T09:34:22+01:00</updated>
+  <updated>2013-02-19T09:36:48+01:00</updated>
   <id>http://lmc-eu.github.com/technology//</id>
   <author>
     <name><![CDATA[LMC s.r.o.]]></name>
@@ -25,8 +25,8 @@ Our creative guys are great when using <em>Adobe Flash Professional</em> authori
 In the presentation slides is purposefully <strong>embedded SWF file</strong> and to have it <em>visible in Gecko browsers</em>, there is a trick, which must be used - add <strong>wmode="opaque"</strong> to the Flash object tag declaration; maybe will this hint save you some time, well, it cost me a lot to discover this, to be honest...</p>
 
 <ul>
-<li><a href="../assets/swiffy.html">Presentation Itself</a> which contains a lot of information for you to know how <em>(and if)</em> start to think differently, about how to serve/use your <em>Adobe-Fixed-Creatives</em> banner content</li>
-<li><a href="../assets/banner.htm">Simple Banner Fallback Example</a> shows easiest possible markup for you to test proposed fallback scenario <em>(yes. MSIE 8 users, this is the only sensible link for you there...)</em></li>
+<li><a href="/technology/assets/swiffy.html">Presentation Itself</a> which contains a lot of information for you to know how <em>(and if)</em> start to think differently, about how to serve/use your <em>Adobe-Fixed-Creatives</em> banner content</li>
+<li><a href="/technology/assets/banner.htm">Simple Banner Fallback Example</a> shows easiest possible markup for you to test proposed fallback scenario <em>(yes. MSIE 8 users, this is the only sensible link for you there...)</em></li>
 <li><a href="http://svg.kvalitne.cz/swiffy/gallery.html">Sample Conversion Gallery</a> is collection of <em>(mostly)</em> LMC banners with positive results of Swiffy conversion process, with some comments, file size comparisons etc. <em>(those demos do not have proposed fallback applied to them so SVG aware browser is a must!)</em> Gallery is temporarily hosted on different server, because of some special mime type handling.</li>
 </ul>
 
