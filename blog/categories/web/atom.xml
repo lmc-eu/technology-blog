@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: web | LMC Technology blog]]></title>
-  <link href="http://lmc-eu.github.com/technology//blog/categories/web/atom.xml" rel="self"/>
-  <link href="http://lmc-eu.github.com/technology//"/>
-  <updated>2013-02-19T09:38:23+01:00</updated>
-  <id>http://lmc-eu.github.com/technology//</id>
+  <title><![CDATA[Category: web | LMC Technology Blog]]></title>
+  <link href="http://lmc-eu.github.io/technology//blog/categories/web/atom.xml" rel="self"/>
+  <link href="http://lmc-eu.github.io/technology//"/>
+  <updated>2013-04-16T07:59:12+02:00</updated>
+  <id>http://lmc-eu.github.io/technology//</id>
   <author>
     <name><![CDATA[LMC s.r.o.]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Swiffy For SWF Banners Help]]></title>
-    <link href="http://lmc-eu.github.com/technology//blog/2013/02/19/swiffy-for-swf-banners-help/"/>
+    <link href="http://lmc-eu.github.io/technology//blog/2013/02/19/swiffy-for-swf-banners-help/"/>
     <updated>2013-02-19T10:00:00+01:00</updated>
-    <id>http://lmc-eu.github.com/technology//blog/2013/02/19/swiffy-for-swf-banners-help</id>
+    <id>http://lmc-eu.github.io/technology//blog/2013/02/19/swiffy-for-swf-banners-help</id>
     <content type="html"><![CDATA[<p>I've prepared this presentation for purposes of our company and it describes benefits of utilizing <a href="https://www.google.com/doubleclick/studio/swiffy/">Swiffy</a> conversion tool for our/client banner ads business.
 Our creative guys are great when using <em>Adobe Flash Professional</em> authoring tool and our customers love it, but <strong>growing iOS devices market share</strong> is already forcing us to change our current technology approach. This presentation should help us with the transformation process.</p>
 

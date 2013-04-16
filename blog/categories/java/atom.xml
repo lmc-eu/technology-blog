@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: java | LMC Technology blog]]></title>
-  <link href="http://lmc-eu.github.com/technology//blog/categories/java/atom.xml" rel="self"/>
-  <link href="http://lmc-eu.github.com/technology//"/>
-  <updated>2013-02-19T09:38:23+01:00</updated>
-  <id>http://lmc-eu.github.com/technology//</id>
+  <title><![CDATA[Category: java | LMC Technology Blog]]></title>
+  <link href="http://lmc-eu.github.io/technology//blog/categories/java/atom.xml" rel="self"/>
+  <link href="http://lmc-eu.github.io/technology//"/>
+  <updated>2013-04-16T07:59:12+02:00</updated>
+  <id>http://lmc-eu.github.io/technology//</id>
   <author>
     <name><![CDATA[LMC s.r.o.]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[groovy testng tests]]></title>
-    <link href="http://lmc-eu.github.com/technology//blog/2013/01/21/groovy-testng-tests/"/>
+    <link href="http://lmc-eu.github.io/technology//blog/2013/01/21/groovy-testng-tests/"/>
     <updated>2013-01-21T13:52:00+01:00</updated>
-    <id>http://lmc-eu.github.com/technology//blog/2013/01/21/groovy-testng-tests</id>
+    <id>http://lmc-eu.github.io/technology//blog/2013/01/21/groovy-testng-tests</id>
     <content type="html"><![CDATA[<p>This post is not about using groovy to write unit tests (just warning for those who haven't tried it yet and still use java: it's addictive), but rather about one particular problem:
 how to run them? Maven surefire plugin should, in theory, run them - there is even explicit support. Unfortunately, this plugin is (like many maven plugins) riddled with bugs and I haven't seen
 single version without at least one bug in testng support. Usually, it fails to find groovy tests.</p>
@@ -140,9 +140,9 @@ This method is called on any testng instance that had been already found and the
   
   <entry>
     <title type="html"><![CDATA[JAXB bug in java 6]]></title>
-    <link href="http://lmc-eu.github.com/technology//blog/2013/01/20/jaxb-bug-in-java-6/"/>
+    <link href="http://lmc-eu.github.io/technology//blog/2013/01/20/jaxb-bug-in-java-6/"/>
     <updated>2013-01-20T11:41:00+01:00</updated>
-    <id>http://lmc-eu.github.com/technology//blog/2013/01/20/jaxb-bug-in-java-6</id>
+    <id>http://lmc-eu.github.io/technology//blog/2013/01/20/jaxb-bug-in-java-6</id>
     <content type="html"><![CDATA[<h1>Short version</h1>
 
 <p><strong>JAXB implementation embedded in Java 6 is broken, don't use it.</strong>
@@ -195,9 +195,9 @@ some internal state flag (and debugging the code confirms this observation).</p>
   
   <entry>
     <title type="html"><![CDATA[JPA batch update]]></title>
-    <link href="http://lmc-eu.github.com/technology//blog/2012/12/08/jpa-batch-update/"/>
+    <link href="http://lmc-eu.github.io/technology//blog/2012/12/08/jpa-batch-update/"/>
     <updated>2012-12-08T12:34:00+01:00</updated>
-    <id>http://lmc-eu.github.com/technology//blog/2012/12/08/jpa-batch-update</id>
+    <id>http://lmc-eu.github.io/technology//blog/2012/12/08/jpa-batch-update</id>
     <content type="html"><![CDATA[<p>I've just spent few hours hunting some very weird bug in our new JPA code and found out that hibernate 4 (I don't know about other JPA implementations) does not clear cache on HQL batch updates.</p>
 
 <p>This code fill some initial values to previously <code>null</code> columns:
