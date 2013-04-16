@@ -2,8 +2,8 @@
 #      Main Configs       #
 # ----------------------- #
 
-url: http://lmc-eu.github.com/technology/
-title: LMC Technology blog
+url: http://lmc-eu.github.io/technology/
+title: LMC Technology Blog
 subtitle: Assorted thoughts of LMC engineers
 author: LMC s.r.o.
 simple_search: http://google.com/search
@@ -58,8 +58,8 @@ default_asides: [asides/recent_posts.html, custom/asides/category_cloud.html, as
 # ----------------------- #
 
 # Github repositories
-github_user:
-github_repo_count: 0
+github_user: lmc-eu
+github_repo_count: 3
 github_show_profile_link: true
 github_skip_forks: true
 
