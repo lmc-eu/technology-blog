@@ -9,8 +9,8 @@
   <meta name="author" content="LMC s.r.o.">
 
   
-  <meta name="description" content="Short version JAXB implementation embedded in Java 6 is broken, don&#8217;t use it.
-Java 7 is ok, if you&#8217;re lucky enough to use latest java &hellip;">
+  <meta name="description" content="Short version JAXB implementation embedded in Java 6 is broken, don&rsquo;t use it.
+Java 7 is ok, if you&rsquo;re lucky enough to use latest java &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -105,25 +105,25 @@ Java 7 is ok, if you&#8217;re lucky enough to use latest java &hellip;">
 
 <div class="entry-content"><h1>Short version</h1>
 
-<p><strong>JAXB implementation embedded in Java 6 is broken, don&#8217;t use it.</strong>
-Java 7 is ok, if you&#8217;re lucky enough to use latest java version.</p>
+<p><strong>JAXB implementation embedded in Java 6 is broken, don&rsquo;t use it.</strong>
+Java 7 is ok, if you&rsquo;re lucky enough to use latest java version.</p>
 
 <p>To check if your implementation is correct, you can use tool at <a href="https://github.com/podlesh/jaxb-bug">github</a></p>
 
 <h1>Long story version</h1>
 
-<p>I discovered this bug when I wrote some utility classes for marshalling and unmarshalling JAXB objects (lots of boilerplate code, but that&#8217;s different story).
+<p>I discovered this bug when I wrote some utility classes for marshalling and unmarshalling JAXB objects (lots of boilerplate code, but that&rsquo;s different story).
 As a conscientious and responsible developer, I wrote unit test. This unit test contains also test case that repeatedly deserializes and serializes xml field, checking
 that the result is the same. Unit tests were green, so commit and push followed. And in a few minutes, Jenkins reported broken test.</p>
 
-<p>WTF? There must be some difference in environment&#8230; and it certainly is: Jenkins job uses jdk 1.6 while I use jdk 1.7 by default (on my macbook, this is the native apple one).
+<p>WTF? There must be some difference in environment&hellip; and it certainly is: Jenkins job uses jdk 1.6 while I use jdk 1.7 by default (on my macbook, this is the native apple one).
 Indeed, after downloading jdk 1.6 from Sun/Oracle and running tests with this version, the deserialization/serialization test case failed.</p>
 
 <p>The failure is quite peculiar one: some elements that are not <em>nil</em> in XML source are marked <code>xsi:nil="true"</code> in the result. But not all of them. The result is correct
 until the first <code>xsi:nil="true"</code> in the source. All following <em>nil</em>-able elements (ie wrapped by <code>JAXBElement</code>) are marked as <em>nil</em>. Apparently, the JAXB unmarshalling code fails to reset
 some internal state flag (and debugging the code confirms this observation).</p>
 
-<p>To check different implementations, I&#8217;ve made <a href="https://github.com/podlesh/jaxb-bug">testing tool</a>. Just to be sure, it checks all four variations of nil and non-nil elements. In reality, it is always the last list that displays either OK or ERROR.</p>
+<p>To check different implementations, I&rsquo;ve made <a href="https://github.com/podlesh/jaxb-bug">testing tool</a>. Just to be sure, it checks all four variations of nil and non-nil elements. In reality, it is always the last list that displays either OK or ERROR.</p>
 
 <p>Result on jdk 1.6:</p>
 
@@ -149,7 +149,7 @@ some internal state flag (and debugging the code confirms this observation).</p>
 </ul>
 
 
-<p>When using JAXB-RI, don&#8217;t forget to check it for this bug. According to <a href="http://jaxb.java.net/guide/Which_JAXB_RI_is_included_in_which_JDK_.html">jaxb.java.net</a>, it looks like this bug is limited to versions 2.1.x</p>
+<p>When using JAXB-RI, don&rsquo;t forget to check it for this bug. According to <a href="http://jaxb.java.net/guide/Which_JAXB_RI_is_included_in_which_JDK_.html">jaxb.java.net</a>, it looks like this bug is limited to versions 2.1.x</p>
 </div>
 
 
@@ -177,7 +177,7 @@ some internal state flag (and debugging the code confirms this observation).</p>
 
 <span class="categories">
   
-    <a class='category' href='/technology/blog/categories/java/'>java</a>
+    <a class='category' href='/technology//blog/categories/java/'>java</a>
   
 </span>
 
@@ -236,7 +236,7 @@ some internal state flag (and debugging the code confirms this observation).</p>
 </section>
 <section>
   <h1>Posts Categories</h1>
-    <span id="tag-cloud"><a href='/technology/technologyblog/categories/database' style='font-size: 120.0%'>database(1)</a> <a href='/technology/technologyblog/categories/java' style='font-size: 160.0%'>java(3)</a> <a href='/technology/technologyblog/categories/web' style='font-size: 120.0%'>web(1)</a> </span>
+    <span id="tag-cloud"><a href='/technology/blog/categories/database' style='font-size: 120.0%'>database(1)</a> <a href='/technology/blog/categories/java' style='font-size: 160.0%'>java(3)</a> <a href='/technology/blog/categories/web' style='font-size: 120.0%'>web(1)</a> </span>
 </section>
 
 <section>

@@ -9,7 +9,7 @@
   <meta name="author" content="LMC s.r.o.">
 
   
-  <meta name="description" content="There is probably no need to introduce hsqldb, let&#8217;s just say that it&#8217;s invaluable tool for automated (integration) tests of java/sql &hellip;">
+  <meta name="description" content="There is probably no need to introduce hsqldb, let&rsquo;s just say that it&rsquo;s invaluable tool for automated (integration) tests of java/sql &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -102,7 +102,7 @@
   </header>
 
 
-<div class="entry-content"><p>There is probably no need to introduce <a href="http://hsqldb.org">hsqldb</a>, let&#8217;s just say that it&#8217;s invaluable tool for automated (integration) tests of java/sql code. Especially when combined with Hibernate/JPA and its automatic ddl.</p>
+<div class="entry-content"><p>There is probably no need to introduce <a href="http://hsqldb.org">hsqldb</a>, let&rsquo;s just say that it&rsquo;s invaluable tool for automated (integration) tests of java/sql code. Especially when combined with Hibernate/JPA and its automatic ddl.</p>
 
 <p>There are, however, pitfalls. One of them looks like this:</p>
 
@@ -112,13 +112,13 @@
 </span><span class='line'>[2012-11-08 18:08:46,257] [main] (ERROR) hibernate.tool.hbm2ddl.SchemaExport - unknown token: </span></code></pre></td></tr></table></div></figure>
 
 
-<p>Yes, that&#8217;s all - the error message ends by colon. Not really helpful&#8230;</p>
+<p>Yes, that&rsquo;s all &ndash; the error message ends by colon. Not really helpful&hellip;</p>
 
-<p>After some digging, the culprit has been found: the &#8220;dollar&#8221; sign <strong>$</strong> in column name. Of course, using such character is <del>stupid</del> <em>controversial</em>, but it&#8217;s too late now - the main db2 database is already eight years old and changing column name without real reason is overkill. Similar problem happens with other <em>controversial</em> column name choices, like <code>ORDER</code>, <code>COUNT</code> or <code>PACKAGE</code>.</p>
+<p>After some digging, the culprit has been found: the &ldquo;dollar&rdquo; sign <strong>$</strong> in column name. Of course, using such character is <del>stupid</del> <em>controversial</em>, but it&rsquo;s too late now &ndash; the main db2 database is already eight years old and changing column name without real reason is overkill. Similar problem happens with other <em>controversial</em> column name choices, like <code>ORDER</code>, <code>COUNT</code> or <code>PACKAGE</code>.</p>
 
 <p>Fortunately, both hibernate and JPA hsqldb can handle such names and the solution is actually quite simple: just quote them.</p>
 
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -143,7 +143,7 @@
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>Hibernate internally converts quotes (they are actually part of JPA2.0 standard) to back-ticks (that&#8217;s hibernate-specific way to escape names) and then back to quotes (in <code>org.hibernate.dialect.HSQLDialect</code>).</p>
+<p>Hibernate internally converts quotes (they are actually part of JPA2.0 standard) to back-ticks (that&rsquo;s hibernate-specific way to escape names) and then back to quotes (in <code>org.hibernate.dialect.HSQLDialect</code>).</p>
 </div>
 
 
@@ -171,7 +171,7 @@
 
 <span class="categories">
   
-    <a class='category' href='/technology/blog/categories/database/'>database</a>
+    <a class='category' href='/technology//blog/categories/database/'>database</a>
   
 </span>
 
@@ -228,7 +228,7 @@
 </section>
 <section>
   <h1>Posts Categories</h1>
-    <span id="tag-cloud"><a href='/technology/technologyblog/categories/database' style='font-size: 120.0%'>database(1)</a> <a href='/technology/technologyblog/categories/java' style='font-size: 160.0%'>java(3)</a> <a href='/technology/technologyblog/categories/web' style='font-size: 120.0%'>web(1)</a> </span>
+    <span id="tag-cloud"><a href='/technology/blog/categories/database' style='font-size: 120.0%'>database(1)</a> <a href='/technology/blog/categories/java' style='font-size: 160.0%'>java(3)</a> <a href='/technology/blog/categories/web' style='font-size: 120.0%'>web(1)</a> </span>
 </section>
 
 <section>

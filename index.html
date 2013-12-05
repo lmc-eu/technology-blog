@@ -9,7 +9,7 @@
   <meta name="author" content="LMC s.r.o.">
 
   
-  <meta name="description" content="I&#8217;ve prepared this presentation for purposes of our company and it describes benefits of utilizing Swiffy conversion tool for our/client banner &hellip;">
+  <meta name="description" content="I&rsquo;ve prepared this presentation for purposes of our company and it describes benefits of utilizing Swiffy conversion tool for our/client banner &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -105,15 +105,15 @@
   </header>
 
 
-  <div class="entry-content"><p>I&#8217;ve prepared this presentation for purposes of our company and it describes benefits of utilizing <a href="https://www.google.com/doubleclick/studio/swiffy/">Swiffy</a> conversion tool for our/client banner ads business.
+  <div class="entry-content"><p>I&rsquo;ve prepared this presentation for purposes of our company and it describes benefits of utilizing <a href="https://www.google.com/doubleclick/studio/swiffy/">Swiffy</a> conversion tool for our/client banner ads business.
 Our creative guys are great when using <em>Adobe Flash Professional</em> authoring tool and our customers love it, but <strong>growing iOS devices market share</strong> is already forcing us to change our current technology approach. This presentation should help us with the transformation process.</p>
 
-<p>New <a href="https://github.com/paulrouget/dzslides">DZSlides</a> version, which I&#8217;ve used as the presentation engine, is a little bit less MSIE 9 friendly then its previous releases and I had to hack it a bit. So now the presentation works well in MSIE 10, Firefox, Chrome, Safari, Opera and acceptably also on MSIE 9 as well, but sorry, MSIE 8- &#8230;
-In the presentation slides is purposefully <strong>embedded SWF file</strong> and to have it <em>visible in Gecko browsers</em>, there is a trick, which must be used - add <strong>wmode=&#8221;opaque&#8221;</strong> to the Flash object tag declaration; maybe will this hint save you some time, well, it cost me a lot to discover this, to be honest&#8230;</p>
+<p>New <a href="https://github.com/paulrouget/dzslides">DZSlides</a> version, which I&rsquo;ve used as the presentation engine, is a little bit less MSIE 9 friendly then its previous releases and I had to hack it a bit. So now the presentation works well in MSIE 10, Firefox, Chrome, Safari, Opera and acceptably also on MSIE 9 as well, but sorry, MSIE 8- &hellip;
+In the presentation slides is purposefully <strong>embedded SWF file</strong> and to have it <em>visible in Gecko browsers</em>, there is a trick, which must be used &ndash; add <strong>wmode=&ldquo;opaque&rdquo;</strong> to the Flash object tag declaration; maybe will this hint save you some time, well, it cost me a lot to discover this, to be honest&hellip;</p>
 
 <ul>
 <li><a href="/technology/assets/swiffy.html">Presentation Itself</a> which contains a lot of information for you to know how <em>(and if)</em> start to think differently, about how to serve/use your <em>Adobe-Fixed-Creatives</em> banner content</li>
-<li><a href="/technology/assets/banner.htm">Simple Banner Fallback Example</a> shows easiest possible markup for you to test proposed fallback scenario <em>(yes. MSIE 8 users, this is the only sensible link for you there&#8230;)</em></li>
+<li><a href="/technology/assets/banner.htm">Simple Banner Fallback Example</a> shows easiest possible markup for you to test proposed fallback scenario <em>(yes. MSIE 8 users, this is the only sensible link for you there&hellip;)</em></li>
 <li><a href="http://svg.kvalitne.cz/swiffy/gallery.html">Sample Conversion Gallery</a> is collection of <em>(mostly)</em> LMC banners with positive results of Swiffy conversion process, with some comments, file size comparisons etc. <em>(those demos do not have proposed fallback applied to them so SVG aware browser is a must!)</em> Gallery is temporarily hosted on different server, because of some special mime type handling.</li>
 </ul>
 
@@ -152,18 +152,18 @@ In the presentation slides is purposefully <strong>embedded SWF file</strong> an
   </header>
 
 
-  <div class="entry-content"><p>This post is not about using groovy to write unit tests (just warning for those who haven&#8217;t tried it yet and still use java: it&#8217;s addictive), but rather about one particular problem:
-how to run them? Maven surefire plugin should, in theory, run them - there is even explicit support. Unfortunately, this plugin is (like many maven plugins) riddled with bugs and I haven&#8217;t seen
+  <div class="entry-content"><p>This post is not about using groovy to write unit tests (just warning for those who haven&rsquo;t tried it yet and still use java: it&rsquo;s addictive), but rather about one particular problem:
+how to run them? Maven surefire plugin should, in theory, run them &ndash; there is even explicit support. Unfortunately, this plugin is (like many maven plugins) riddled with bugs and I haven&rsquo;t seen
 single version without at least one bug in testng support. Usually, it fails to find groovy tests.</p>
 
 <p>One obvious workaround is to compile groovy to <code>.class</code> files. When compiled, groovy classes are found by surefire just like java ones. This solution, however, is quite complicated and just feels wrong.</p>
 
 <p>Another solution is quite obscure, but perfect: testng <code>@Factory</code> annotation.
-This method is called on any testng instance that had been already found and the result (array) is then added to list of testng instances to execute. In short, this allows us to &#8220;spawn&#8221; other tests.</p>
+This method is called on any testng instance that had been already found and the result (array) is then added to list of testng instances to execute. In short, this allows us to &ldquo;spawn&rdquo; other tests.</p>
 
 <p>Less talking, more code:</p>
 
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -308,25 +308,25 @@ This method is called on any testng instance that had been already found and the
 
   <div class="entry-content"><h1>Short version</h1>
 
-<p><strong>JAXB implementation embedded in Java 6 is broken, don&#8217;t use it.</strong>
-Java 7 is ok, if you&#8217;re lucky enough to use latest java version.</p>
+<p><strong>JAXB implementation embedded in Java 6 is broken, don&rsquo;t use it.</strong>
+Java 7 is ok, if you&rsquo;re lucky enough to use latest java version.</p>
 
 <p>To check if your implementation is correct, you can use tool at <a href="https://github.com/podlesh/jaxb-bug">github</a></p>
 
 <h1>Long story version</h1>
 
-<p>I discovered this bug when I wrote some utility classes for marshalling and unmarshalling JAXB objects (lots of boilerplate code, but that&#8217;s different story).
+<p>I discovered this bug when I wrote some utility classes for marshalling and unmarshalling JAXB objects (lots of boilerplate code, but that&rsquo;s different story).
 As a conscientious and responsible developer, I wrote unit test. This unit test contains also test case that repeatedly deserializes and serializes xml field, checking
 that the result is the same. Unit tests were green, so commit and push followed. And in a few minutes, Jenkins reported broken test.</p>
 
-<p>WTF? There must be some difference in environment&#8230; and it certainly is: Jenkins job uses jdk 1.6 while I use jdk 1.7 by default (on my macbook, this is the native apple one).
+<p>WTF? There must be some difference in environment&hellip; and it certainly is: Jenkins job uses jdk 1.6 while I use jdk 1.7 by default (on my macbook, this is the native apple one).
 Indeed, after downloading jdk 1.6 from Sun/Oracle and running tests with this version, the deserialization/serialization test case failed.</p>
 
 <p>The failure is quite peculiar one: some elements that are not <em>nil</em> in XML source are marked <code>xsi:nil="true"</code> in the result. But not all of them. The result is correct
 until the first <code>xsi:nil="true"</code> in the source. All following <em>nil</em>-able elements (ie wrapped by <code>JAXBElement</code>) are marked as <em>nil</em>. Apparently, the JAXB unmarshalling code fails to reset
 some internal state flag (and debugging the code confirms this observation).</p>
 
-<p>To check different implementations, I&#8217;ve made <a href="https://github.com/podlesh/jaxb-bug">testing tool</a>. Just to be sure, it checks all four variations of nil and non-nil elements. In reality, it is always the last list that displays either OK or ERROR.</p>
+<p>To check different implementations, I&rsquo;ve made <a href="https://github.com/podlesh/jaxb-bug">testing tool</a>. Just to be sure, it checks all four variations of nil and non-nil elements. In reality, it is always the last list that displays either OK or ERROR.</p>
 
 <p>Result on jdk 1.6:</p>
 
@@ -352,7 +352,7 @@ some internal state flag (and debugging the code confirms this observation).</p>
 </ul>
 
 
-<p>When using JAXB-RI, don&#8217;t forget to check it for this bug. According to <a href="http://jaxb.java.net/guide/Which_JAXB_RI_is_included_in_which_JDK_.html">jaxb.java.net</a>, it looks like this bug is limited to versions 2.1.x</p>
+<p>When using JAXB-RI, don&rsquo;t forget to check it for this bug. According to <a href="http://jaxb.java.net/guide/Which_JAXB_RI_is_included_in_which_JDK_.html">jaxb.java.net</a>, it looks like this bug is limited to versions 2.1.x</p>
 </div>
   
   
@@ -388,11 +388,11 @@ some internal state flag (and debugging the code confirms this observation).</p>
   </header>
 
 
-  <div class="entry-content"><p>I&#8217;ve just spent few hours hunting some very weird bug in our new JPA code and found out that hibernate 4 (I don&#8217;t know about other JPA implementations) does not clear cache on HQL batch updates.</p>
+  <div class="entry-content"><p>I&rsquo;ve just spent few hours hunting some very weird bug in our new JPA code and found out that hibernate 4 (I don&rsquo;t know about other JPA implementations) does not clear cache on HQL batch updates.</p>
 
 <p>This code fill some initial values to previously <code>null</code> columns:</p>
 
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -409,11 +409,11 @@ some internal state flag (and debugging the code confirms this observation).</p>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>The update is correctly processed into SQL query and executed, but the session cache remains as it is. I&#8217;ve expected hibernate to detect that PdjdOrderItem is being changed and to clear all cached entities (or just the changed ones, but that would be unreasonably complicated). Hibernate, however, does nothing and happily server stale PdjdOrderItem entities with <code>null</code> values.</p>
+<p>The update is correctly processed into SQL query and executed, but the session cache remains as it is. I&rsquo;ve expected hibernate to detect that PdjdOrderItem is being changed and to clear all cached entities (or just the changed ones, but that would be unreasonably complicated). Hibernate, however, does nothing and happily server stale PdjdOrderItem entities with <code>null</code> values.</p>
 
 <p>Solution is quite simple, if a little annoying: clear the cache by explicit <code>clear()</code> call:</p>
 
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -470,7 +470,7 @@ some internal state flag (and debugging the code confirms this observation).</p>
   </header>
 
 
-  <div class="entry-content"><p>There is probably no need to introduce <a href="http://hsqldb.org">hsqldb</a>, let&#8217;s just say that it&#8217;s invaluable tool for automated (integration) tests of java/sql code. Especially when combined with Hibernate/JPA and its automatic ddl.</p>
+  <div class="entry-content"><p>There is probably no need to introduce <a href="http://hsqldb.org">hsqldb</a>, let&rsquo;s just say that it&rsquo;s invaluable tool for automated (integration) tests of java/sql code. Especially when combined with Hibernate/JPA and its automatic ddl.</p>
 
 <p>There are, however, pitfalls. One of them looks like this:</p>
 
@@ -480,13 +480,13 @@ some internal state flag (and debugging the code confirms this observation).</p>
 </span><span class='line'>[2012-11-08 18:08:46,257] [main] (ERROR) hibernate.tool.hbm2ddl.SchemaExport - unknown token: </span></code></pre></td></tr></table></div></figure>
 
 
-<p>Yes, that&#8217;s all - the error message ends by colon. Not really helpful&#8230;</p>
+<p>Yes, that&rsquo;s all &ndash; the error message ends by colon. Not really helpful&hellip;</p>
 
-<p>After some digging, the culprit has been found: the &#8220;dollar&#8221; sign <strong>$</strong> in column name. Of course, using such character is <del>stupid</del> <em>controversial</em>, but it&#8217;s too late now - the main db2 database is already eight years old and changing column name without real reason is overkill. Similar problem happens with other <em>controversial</em> column name choices, like <code>ORDER</code>, <code>COUNT</code> or <code>PACKAGE</code>.</p>
+<p>After some digging, the culprit has been found: the &ldquo;dollar&rdquo; sign <strong>$</strong> in column name. Of course, using such character is <del>stupid</del> <em>controversial</em>, but it&rsquo;s too late now &ndash; the main db2 database is already eight years old and changing column name without real reason is overkill. Similar problem happens with other <em>controversial</em> column name choices, like <code>ORDER</code>, <code>COUNT</code> or <code>PACKAGE</code>.</p>
 
 <p>Fortunately, both hibernate and JPA hsqldb can handle such names and the solution is actually quite simple: just quote them.</p>
 
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -511,7 +511,7 @@ some internal state flag (and debugging the code confirms this observation).</p>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>Hibernate internally converts quotes (they are actually part of JPA2.0 standard) to back-ticks (that&#8217;s hibernate-specific way to escape names) and then back to quotes (in <code>org.hibernate.dialect.HSQLDialect</code>).</p>
+<p>Hibernate internally converts quotes (they are actually part of JPA2.0 standard) to back-ticks (that&rsquo;s hibernate-specific way to escape names) and then back to quotes (in <code>org.hibernate.dialect.HSQLDialect</code>).</p>
 </div>
   
   
@@ -555,7 +555,7 @@ some internal state flag (and debugging the code confirms this observation).</p>
 </section>
 <section>
   <h1>Posts Categories</h1>
-    <span id="tag-cloud"><a href='/technology/technologyblog/categories/database' style='font-size: 120.0%'>database(1)</a> <a href='/technology/technologyblog/categories/java' style='font-size: 160.0%'>java(3)</a> <a href='/technology/technologyblog/categories/web' style='font-size: 120.0%'>web(1)</a> </span>
+    <span id="tag-cloud"><a href='/technology/blog/categories/database' style='font-size: 120.0%'>database(1)</a> <a href='/technology/blog/categories/java' style='font-size: 160.0%'>java(3)</a> <a href='/technology/blog/categories/web' style='font-size: 120.0%'>web(1)</a> </span>
 </section>
 
 <section>

@@ -9,7 +9,7 @@
   <meta name="author" content="LMC s.r.o.">
 
   
-  <meta name="description" content="I&#8217;ve just spent few hours hunting some very weird bug in our new JPA code and found out that hibernate 4 (I don&#8217;t know about other JPA &hellip;">
+  <meta name="description" content="I&rsquo;ve just spent few hours hunting some very weird bug in our new JPA code and found out that hibernate 4 (I don&rsquo;t know about other JPA &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -102,11 +102,11 @@
   </header>
 
 
-<div class="entry-content"><p>I&#8217;ve just spent few hours hunting some very weird bug in our new JPA code and found out that hibernate 4 (I don&#8217;t know about other JPA implementations) does not clear cache on HQL batch updates.</p>
+<div class="entry-content"><p>I&rsquo;ve just spent few hours hunting some very weird bug in our new JPA code and found out that hibernate 4 (I don&rsquo;t know about other JPA implementations) does not clear cache on HQL batch updates.</p>
 
 <p>This code fill some initial values to previously <code>null</code> columns:</p>
 
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -123,11 +123,11 @@
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>The update is correctly processed into SQL query and executed, but the session cache remains as it is. I&#8217;ve expected hibernate to detect that PdjdOrderItem is being changed and to clear all cached entities (or just the changed ones, but that would be unreasonably complicated). Hibernate, however, does nothing and happily server stale PdjdOrderItem entities with <code>null</code> values.</p>
+<p>The update is correctly processed into SQL query and executed, but the session cache remains as it is. I&rsquo;ve expected hibernate to detect that PdjdOrderItem is being changed and to clear all cached entities (or just the changed ones, but that would be unreasonably complicated). Hibernate, however, does nothing and happily server stale PdjdOrderItem entities with <code>null</code> values.</p>
 
 <p>Solution is quite simple, if a little annoying: clear the cache by explicit <code>clear()</code> call:</p>
 
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -176,7 +176,7 @@
 
 <span class="categories">
   
-    <a class='category' href='/technology/blog/categories/java/'>java</a>
+    <a class='category' href='/technology//blog/categories/java/'>java</a>
   
 </span>
 
@@ -235,7 +235,7 @@
 </section>
 <section>
   <h1>Posts Categories</h1>
-    <span id="tag-cloud"><a href='/technology/technologyblog/categories/database' style='font-size: 120.0%'>database(1)</a> <a href='/technology/technologyblog/categories/java' style='font-size: 160.0%'>java(3)</a> <a href='/technology/technologyblog/categories/web' style='font-size: 120.0%'>web(1)</a> </span>
+    <span id="tag-cloud"><a href='/technology/blog/categories/database' style='font-size: 120.0%'>database(1)</a> <a href='/technology/blog/categories/java' style='font-size: 160.0%'>java(3)</a> <a href='/technology/blog/categories/web' style='font-size: 120.0%'>web(1)</a> </span>
 </section>
 
 <section>

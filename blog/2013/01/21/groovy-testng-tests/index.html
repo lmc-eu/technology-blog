@@ -9,7 +9,7 @@
   <meta name="author" content="LMC s.r.o.">
 
   
-  <meta name="description" content="This post is not about using groovy to write unit tests (just warning for those who haven&#8217;t tried it yet and still use java: it&#8217;s &hellip;">
+  <meta name="description" content="This post is not about using groovy to write unit tests (just warning for those who haven&rsquo;t tried it yet and still use java: it&rsquo;s &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -102,18 +102,18 @@
   </header>
 
 
-<div class="entry-content"><p>This post is not about using groovy to write unit tests (just warning for those who haven&#8217;t tried it yet and still use java: it&#8217;s addictive), but rather about one particular problem:
-how to run them? Maven surefire plugin should, in theory, run them - there is even explicit support. Unfortunately, this plugin is (like many maven plugins) riddled with bugs and I haven&#8217;t seen
+<div class="entry-content"><p>This post is not about using groovy to write unit tests (just warning for those who haven&rsquo;t tried it yet and still use java: it&rsquo;s addictive), but rather about one particular problem:
+how to run them? Maven surefire plugin should, in theory, run them &ndash; there is even explicit support. Unfortunately, this plugin is (like many maven plugins) riddled with bugs and I haven&rsquo;t seen
 single version without at least one bug in testng support. Usually, it fails to find groovy tests.</p>
 
 <p>One obvious workaround is to compile groovy to <code>.class</code> files. When compiled, groovy classes are found by surefire just like java ones. This solution, however, is quite complicated and just feels wrong.</p>
 
 <p>Another solution is quite obscure, but perfect: testng <code>@Factory</code> annotation.
-This method is called on any testng instance that had been already found and the result (array) is then added to list of testng instances to execute. In short, this allows us to &#8220;spawn&#8221; other tests.</p>
+This method is called on any testng instance that had been already found and the result (array) is then added to list of testng instances to execute. In short, this allows us to &ldquo;spawn&rdquo; other tests.</p>
 
 <p>Less talking, more code:</p>
 
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -248,7 +248,7 @@ This method is called on any testng instance that had been already found and the
 
 <span class="categories">
   
-    <a class='category' href='/technology/blog/categories/java/'>java</a>
+    <a class='category' href='/technology//blog/categories/java/'>java</a>
   
 </span>
 
@@ -307,7 +307,7 @@ This method is called on any testng instance that had been already found and the
 </section>
 <section>
   <h1>Posts Categories</h1>
-    <span id="tag-cloud"><a href='/technology/technologyblog/categories/database' style='font-size: 120.0%'>database(1)</a> <a href='/technology/technologyblog/categories/java' style='font-size: 160.0%'>java(3)</a> <a href='/technology/technologyblog/categories/web' style='font-size: 120.0%'>web(1)</a> </span>
+    <span id="tag-cloud"><a href='/technology/blog/categories/database' style='font-size: 120.0%'>database(1)</a> <a href='/technology/blog/categories/java' style='font-size: 160.0%'>java(3)</a> <a href='/technology/blog/categories/web' style='font-size: 120.0%'>web(1)</a> </span>
 </section>
 
 <section>

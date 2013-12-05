@@ -2,9 +2,9 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: java | LMC Technology Blog]]></title>
-  <link href="http://lmc-eu.github.io/technology//blog/categories/java/atom.xml" rel="self"/>
+  <link href="http://lmc-eu.github.io/technology///blog/categories/java/atom.xml" rel="self"/>
   <link href="http://lmc-eu.github.io/technology//"/>
-  <updated>2013-04-16T07:59:12+02:00</updated>
+  <updated>2013-12-05T16:16:16+01:00</updated>
   <id>http://lmc-eu.github.io/technology//</id>
   <author>
     <name><![CDATA[LMC s.r.o.]]></name>
@@ -18,17 +18,17 @@
     <link href="http://lmc-eu.github.io/technology//blog/2013/01/21/groovy-testng-tests/"/>
     <updated>2013-01-21T13:52:00+01:00</updated>
     <id>http://lmc-eu.github.io/technology//blog/2013/01/21/groovy-testng-tests</id>
-    <content type="html"><![CDATA[<p>This post is not about using groovy to write unit tests (just warning for those who haven't tried it yet and still use java: it's addictive), but rather about one particular problem:
-how to run them? Maven surefire plugin should, in theory, run them - there is even explicit support. Unfortunately, this plugin is (like many maven plugins) riddled with bugs and I haven't seen
+    <content type="html"><![CDATA[<p>This post is not about using groovy to write unit tests (just warning for those who haven&rsquo;t tried it yet and still use java: it&rsquo;s addictive), but rather about one particular problem:
+how to run them? Maven surefire plugin should, in theory, run them &ndash; there is even explicit support. Unfortunately, this plugin is (like many maven plugins) riddled with bugs and I haven&rsquo;t seen
 single version without at least one bug in testng support. Usually, it fails to find groovy tests.</p>
 
 <p>One obvious workaround is to compile groovy to <code>.class</code> files. When compiled, groovy classes are found by surefire just like java ones. This solution, however, is quite complicated and just feels wrong.</p>
 
 <p>Another solution is quite obscure, but perfect: testng <code>@Factory</code> annotation.
-This method is called on any testng instance that had been already found and the result (array) is then added to list of testng instances to execute. In short, this allows us to "spawn" other tests.</p>
+This method is called on any testng instance that had been already found and the result (array) is then added to list of testng instances to execute. In short, this allows us to &ldquo;spawn&rdquo; other tests.</p>
 
 <p>Less talking, more code:
-<div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -145,25 +145,25 @@ This method is called on any testng instance that had been already found and the
     <id>http://lmc-eu.github.io/technology//blog/2013/01/20/jaxb-bug-in-java-6</id>
     <content type="html"><![CDATA[<h1>Short version</h1>
 
-<p><strong>JAXB implementation embedded in Java 6 is broken, don't use it.</strong>
-Java 7 is ok, if you're lucky enough to use latest java version.</p>
+<p><strong>JAXB implementation embedded in Java 6 is broken, don&rsquo;t use it.</strong>
+Java 7 is ok, if you&rsquo;re lucky enough to use latest java version.</p>
 
 <p>To check if your implementation is correct, you can use tool at <a href="https://github.com/podlesh/jaxb-bug">github</a></p>
 
 <h1>Long story version</h1>
 
-<p>I discovered this bug when I wrote some utility classes for marshalling and unmarshalling JAXB objects (lots of boilerplate code, but that's different story).
+<p>I discovered this bug when I wrote some utility classes for marshalling and unmarshalling JAXB objects (lots of boilerplate code, but that&rsquo;s different story).
 As a conscientious and responsible developer, I wrote unit test. This unit test contains also test case that repeatedly deserializes and serializes xml field, checking
 that the result is the same. Unit tests were green, so commit and push followed. And in a few minutes, Jenkins reported broken test.</p>
 
-<p>WTF? There must be some difference in environment... and it certainly is: Jenkins job uses jdk 1.6 while I use jdk 1.7 by default (on my macbook, this is the native apple one).
+<p>WTF? There must be some difference in environment&hellip; and it certainly is: Jenkins job uses jdk 1.6 while I use jdk 1.7 by default (on my macbook, this is the native apple one).
 Indeed, after downloading jdk 1.6 from Sun/Oracle and running tests with this version, the deserialization/serialization test case failed.</p>
 
 <p>The failure is quite peculiar one: some elements that are not <em>nil</em> in XML source are marked <code>xsi:nil="true"</code> in the result. But not all of them. The result is correct
 until the first <code>xsi:nil="true"</code> in the source. All following <em>nil</em>-able elements (ie wrapped by <code>JAXBElement</code>) are marked as <em>nil</em>. Apparently, the JAXB unmarshalling code fails to reset
 some internal state flag (and debugging the code confirms this observation).</p>
 
-<p>To check different implementations, I've made <a href="https://github.com/podlesh/jaxb-bug">testing tool</a>. Just to be sure, it checks all four variations of nil and non-nil elements. In reality, it is always the last list that displays either OK or ERROR.</p>
+<p>To check different implementations, I&rsquo;ve made <a href="https://github.com/podlesh/jaxb-bug">testing tool</a>. Just to be sure, it checks all four variations of nil and non-nil elements. In reality, it is always the last list that displays either OK or ERROR.</p>
 
 <p>Result on jdk 1.6:</p>
 
@@ -189,7 +189,7 @@ some internal state flag (and debugging the code confirms this observation).</p>
 </ul>
 
 
-<p>When using JAXB-RI, don't forget to check it for this bug. According to <a href="http://jaxb.java.net/guide/Which_JAXB_RI_is_included_in_which_JDK_.html">jaxb.java.net</a>, it looks like this bug is limited to versions 2.1.x</p>
+<p>When using JAXB-RI, don&rsquo;t forget to check it for this bug. According to <a href="http://jaxb.java.net/guide/Which_JAXB_RI_is_included_in_which_JDK_.html">jaxb.java.net</a>, it looks like this bug is limited to versions 2.1.x</p>
 ]]></content>
   </entry>
   
@@ -198,10 +198,10 @@ some internal state flag (and debugging the code confirms this observation).</p>
     <link href="http://lmc-eu.github.io/technology//blog/2012/12/08/jpa-batch-update/"/>
     <updated>2012-12-08T12:34:00+01:00</updated>
     <id>http://lmc-eu.github.io/technology//blog/2012/12/08/jpa-batch-update</id>
-    <content type="html"><![CDATA[<p>I've just spent few hours hunting some very weird bug in our new JPA code and found out that hibernate 4 (I don't know about other JPA implementations) does not clear cache on HQL batch updates.</p>
+    <content type="html"><![CDATA[<p>I&rsquo;ve just spent few hours hunting some very weird bug in our new JPA code and found out that hibernate 4 (I don&rsquo;t know about other JPA implementations) does not clear cache on HQL batch updates.</p>
 
 <p>This code fill some initial values to previously <code>null</code> columns:
-<div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -226,10 +226,10 @@ some internal state flag (and debugging the code confirms this observation).</p>
 </span><span class='line'>
 </span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
-The update is correctly processed into SQL query and executed, but the session cache remains as it is. I've expected hibernate to detect that PdjdOrderItem is being changed and to clear all cached entities (or just the changed ones, but that would be unreasonably complicated). Hibernate, however, does nothing and happily server stale PdjdOrderItem entities with <code>null</code> values.</p>
+The update is correctly processed into SQL query and executed, but the session cache remains as it is. I&rsquo;ve expected hibernate to detect that PdjdOrderItem is being changed and to clear all cached entities (or just the changed ones, but that would be unreasonably complicated). Hibernate, however, does nothing and happily server stale PdjdOrderItem entities with <code>null</code> values.</p>
 
 <p>Solution is quite simple, if a little annoying: clear the cache by explicit <code>clear()</code> call:
-<div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
